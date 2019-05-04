@@ -1,0 +1,17 @@
+.dub
+docs.json
+__dummy.html
+docs/
+/sdutil
+*.so
+*.dylib
+*.dll
+*.a
+*.lib
+sdutil-test-*
+*.exe
+*.o
+*.obj
+*.lst
+
+bin

@@ -1,0 +1,12 @@
+[Unit]
+Description=Example D service
+
+[Service]
+Type=notify
+ExecStart=/usr/bin/example
+Restart=on-failure
+RestartSec=5
+WatchdogSec=1
+
+[Install]
+WantedBy=default.target

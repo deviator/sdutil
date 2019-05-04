@@ -1,0 +1,5 @@
+name "example"
+
+targetPath "bin"
+
+dependency "sdutil" path="../../"

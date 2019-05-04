@@ -1,0 +1,8 @@
+name "sdutil"
+description "Helpers for communicate with systemd"
+authors "deviator"
+copyright "Copyright © 2019, deviator"
+license "MIT"
+
+dependency "ssll" path="../ssll"
+#dependency "ssll" version="~>1.0.0"
