@@ -65,7 +65,6 @@ class SDJournalLogger : SDSimpleLogger
 
     override void writeLogMsg(ref LogEntry p) @trusted
     {
-        import std.string : toStringz;
         buffer.clear();
         formattedWrite(buffer, "[%s:%d] %s\0",
                     p.file.findSplitAfter("source/")[1], p.line, p.msg);
