@@ -66,8 +66,10 @@ class SDJournalLogger : SDSimpleLogger
     override void writeLogMsg(ref LogEntry p) @trusted
     {
         buffer.clear();
-        formattedWrite(buffer, "[%s:%d] %s\0",
+        formattedWrite(buffer, "[%s:%d] %s",
                     p.file.findSplitAfter("source/")[1], p.line, p.msg);
-        sd_journal_print(levelRemap[p.logLevel], "%s", buffer.data.ptr);
+        sd_journal_print(levelRemap[p.logLevel], "%.*s",
+                            cast(int)buffer.data.length,
+                            buffer.data.ptr);
     }
 }

@@ -23,7 +23,7 @@ void main()
 
     foreach (i; 0 .. 10)
     {
-        trace("some trace info");
+        trace("some trace info with data ", i);
         sdNotify_watchdog();
         Thread.sleep(250.msecs);
     }
