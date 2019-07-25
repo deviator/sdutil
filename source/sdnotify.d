@@ -2,7 +2,6 @@ module sdnotify;
 
 import ssll;
 
-import std.exception : enforce;
 import std.string : toStringz, format;
 
 private enum libNames = [
@@ -18,35 +17,39 @@ alias pid_t = size_t;
 void initSystemDLib()
 {
     if (lib !is null) return;
+
     foreach (name; libNames)
     {
         lib = loadLibrary(name);
         if (lib !is null) break;
     }
-    enforce(lib, "can't load systemd lib");
+
+    if (lib is null)
+        assert(0, "can't load systemd lib");
+
     loadApiSymbols();
 }
 
 ///
 void cleanupSystemDLib() { unloadLibrary(lib); }
 
-mixin apiSymbols;
+mixin SSLL_INIT;
 
 @api("lib") @nogc
 {
-    int sd_notify(int unset_environment, const char* state) { mixin(rtLib); }
-    int sd_pid_notify(pid_t pid, int unset_environment, const char *state) { mixin(rtLib); }
+    int sd_notify(int unset_environment, const char* state) { mixin(SSLL_CALL); }
+    int sd_pid_notify(pid_t pid, int unset_environment, const char *state) { mixin(SSLL_CALL); }
 
     extern (C) // because variablic arguments
     {
         pragma(mangle, "sdutil_dlib_sd_journal_print") // because extern(C)
-        int sd_journal_print(int priority, const char* fmt, ...) { mixin(rtLib); }
+        int sd_journal_print(int priority, const char* fmt, ...) { mixin(SSLL_CALL); }
 
         pragma(mangle, "sdutil_dlib_sd_journal_send")
-        int sd_journal_send(const char* fmt, ...) { mixin(rtLib); }
+        int sd_journal_send(const char* fmt, ...) { mixin(SSLL_CALL); }
     }
 
-    int sd_journal_perror(const char *message) { mixin(rtLib); }
+    int sd_journal_perror(const char *message) { mixin(SSLL_CALL); }
 }
 
 ///
