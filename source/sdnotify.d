@@ -35,6 +35,8 @@ void cleanupSystemDLib() { unloadLibrary(lib); }
 
 mixin SSLL_INIT;
 
+public import core.sys.posix.sys.uio : iovec;
+
 @api("lib") @nogc
 {
     int sd_notify(int unset_environment, const char* state) { mixin(SSLL_CALL); }
@@ -47,6 +49,9 @@ mixin SSLL_INIT;
 
         pragma(mangle, "sdutil_dlib_sd_journal_send")
         int sd_journal_send(const char* fmt, ...) { mixin(SSLL_CALL); }
+
+        pragma(mangle, "sdutil_dlib_sd_journal_sendv")
+        int sd_journal_sendv(const iovec* buf, int count) { mixin(SSLL_CALL); }
     }
 
     int sd_journal_perror(const char *message) { mixin(SSLL_CALL); }

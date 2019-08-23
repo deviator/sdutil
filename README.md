@@ -6,6 +6,7 @@ Minimal dynamic bindings for `libsystemd.so`:
 * `int sd_pid_notify(pid_t pid, int unset_environment, const char *state)`
 * `int sd_journal_print(int priority, const char* fmt, ...)`
 * `int sd_journal_send(const char* fmt, ...)`
+* `int sd_journal_sendv(const iovec* data, int cnt)`
 * `int sd_journal_perror(const char *message)`
 
 with minimal wraps:
@@ -22,6 +23,9 @@ with minimal wraps:
 and 2 `std.experimental.logger.Logger` implementations:
 
 * `SDSimpleLogger` not use `libsystemd`, only specific format output to `stderr`
-* `SDJournalLogger` use `sd_journal_print` in `writeLogMsg` and call `initSystemDLib` in ctor
+* `SDJournalLogger` use `sd_journal_print` in `writeLogMsg` and call
+  `initSystemDLib` in ctor. It also add custom fields as `CODE_MODULE`
+  (exact module name), `CODE_MODULE0` (first level), `CODE_MODULE1`
+  (second level) can be used as tags for filtering ([read more](example/journal/README.md))
 
 See [example](example)

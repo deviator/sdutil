@@ -5,6 +5,9 @@ import sdnotify;
 
 import core.thread;
 
+import mod;
+import mod2;
+
 void main()
 {
     sharedLog = new SDJournalLogger;
@@ -20,6 +23,13 @@ void main()
     warning("test warning");
     error("test error");
     critical("test critical");
+
+    warning("multi\nline\nwarning");
+
+    foo();
+    mod2foo();
+    mod2pac1foo();
+    mod2mod3foo();
 
     foreach (i; 0 .. 10)
     {
