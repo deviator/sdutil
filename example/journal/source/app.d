@@ -1,7 +1,6 @@
 import std.stdio;
 
-import sdlogger;
-import sdnotify;
+import systemd;
 
 import core.thread;
 
@@ -10,7 +9,15 @@ import mod2;
 
 void main()
 {
-    sharedLog = new SDJournalLogger;
+    initSystemDLib();
+
+    // started as systemd service if return code > 0
+    if (sdNotify_status("loading"))
+        sharedLog = new SDJournalLogger;
+    // else use default logger
+
+    stderr.writeln("watchdog: ", sdWatchdogEnabled());
+
     info("start loading");
 
     Thread.sleep(250.msecs);
@@ -46,7 +53,7 @@ void main()
 
     foreach (i; 0 .. 10)
     {
-        trace("some trace info");
+        trace("at this loop app must be killed with watchdog because sleep is > 1 sec");
         sdNotify_watchdog();
         Thread.sleep(2500.msecs);
     }

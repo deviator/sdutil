@@ -1,4 +1,4 @@
-module sdlogger;
+module systemd.stdlogger;
 
 public import std.experimental.logger;
 
@@ -48,15 +48,14 @@ class SDSimpleLogger : Logger
         foreach (ln; p.msg.lineSplitter)
         {
             if (fline)
+            {
+                fline = false;
                 formattedWrite(buffer, "<%d>[%s:%d] %s",
                             levelRemap[p.logLevel],
                             fileNameProc(p.file), p.line,
                             ln);
-            else
-            {
-                fline = false;
-                formattedWrite(buffer, "\n<%d>  %s", ln);
             }
+            else formattedWrite(buffer, "\n<%d>  %s", ln);
         }
         stderr.writeln(buffer.data);
     }
@@ -70,7 +69,8 @@ class SDSimpleLogger : Logger
  +/
 class SDJournalLogger : SDSimpleLogger
 {
-    import sdnotify;
+    import systemd.base;
+    import systemd.journal;
 
     Appender!(char[])[8] bufs;
 
@@ -78,6 +78,9 @@ class SDJournalLogger : SDSimpleLogger
     {
         super(ll);
         bufs[0] = buffer;
+        foreach (ref b; bufs) b.reserve(128);
+
+        // if not inited
         initSystemDLib();
     }
 
