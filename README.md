@@ -23,7 +23,7 @@ with minimal wraps:
 and 2 `std.experimental.logger.Logger` implementations:
 
 * `SDSimpleLogger` not use `libsystemd`, only specific format output to `stderr`
-* `SDJournalLogger` use `sd_journal_print` in `writeLogMsg` and call
+* `SDJournalLogger` use `sd_journal_sendv` in `writeLogMsg` and call
   `initSystemDLib` in ctor. It also add custom fields as `CODE_MODULE`
   (exact module name), `CODE_MODULE0` (first level), `CODE_MODULE1`
   (second level) can be used as tags for filtering ([read more](example/journal/README.md))
