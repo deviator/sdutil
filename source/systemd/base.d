@@ -12,7 +12,7 @@ private enum libNames = [
 package __gshared void* lib;
 
 ///
-void initSystemDLib()
+void initSystemDLib(LoadApiSymbolsVerbose loadVerbose=LoadApiSymbolsVerbose.assertion)
 {
     if (lib !is null) return;
 
@@ -26,10 +26,10 @@ void initSystemDLib()
         assert(0, "can't load systemd lib");
 
     static import systemd.daemon;
-    systemd.daemon.loadApiSymbols(LoadApiSymbolsVerbose.assertion);
+    systemd.daemon.loadApiSymbols(loadVerbose);
 
     static import systemd.journal;
-    systemd.journal.loadApiSymbols(LoadApiSymbolsVerbose.assertion);
+    systemd.journal.loadApiSymbols(loadVerbose);
 }
 
 ///
